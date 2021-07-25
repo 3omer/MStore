@@ -5,8 +5,10 @@
         </div>
     </div>
     <div class="card-body">
+        <p class="card-category">{{product.category}}
+        </p>
         <h4 class="card-title">{{product.title}}</h4>
-        <p class="card-category">{{product.category}}</p>
+        <p class="card-subtitle">{{product.price | currency}}</p>
     </div>
     <div class="card-footer">
         <div class="actions">
