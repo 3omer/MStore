@@ -10,6 +10,7 @@ import {MatRippleModule} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
+import { ProductsListComponent } from 'app/products-list/products-list.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatTooltipModule,
   ],
   declarations: [
-    HomeComponent
+    HomeComponent,
+    ProductsListComponent
   ]
 })
 

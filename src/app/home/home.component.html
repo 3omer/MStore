@@ -2,25 +2,8 @@
   <div class="container-fluid">
     <div class="row">
         <!-- products list -->
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <div class="product-image">
-                        <img [src]="product.image" class="img-fluid" alt="product image">
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title">{{product.title}}</h4>
-                    <p class="card-category">{{product.category}}</p>
-                </div>
-                <div class="card-footer">
-                    <div class="actions">
-                        <button class="btn btn-info">view</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
+        <products-list class="col-md-4">
+        </products-list>        
     </div>
   </div>
 </div>

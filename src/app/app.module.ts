@@ -23,8 +23,7 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
   ],
   declarations: [
     AppComponent,
-    MainLayoutComponent,
-
+    MainLayoutComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
