@@ -34,8 +34,8 @@ export class ProductsService {
      return of([
       "electronics",
       "jewelery",
-      "men clothing",
-      "women clothing"
-      ])
+      "men's clothing",
+      "women's clothing"
+  ])
    }
 }

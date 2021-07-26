@@ -11,6 +11,7 @@ export class ProductsListComponent implements OnInit {
 
   products: Product[]
   categories: string[]
+  selectedCategory: string
   constructor(private productsService: ProductsService) { }
 
   ngOnInit(): void {
@@ -27,6 +28,7 @@ export class ProductsListComponent implements OnInit {
       return this.products
     }
     else {
+      this.selectedCategory = category
       this.productsService.getProducts(category).subscribe(filteredProducts => this.products = filteredProducts)
     }
   }
