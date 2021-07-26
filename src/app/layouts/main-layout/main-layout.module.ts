@@ -13,6 +13,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { ProductsListComponent } from 'app/products-list/products-list.component';
 import { ProductComponent } from 'app/product/product.component';
 import { CategoriesListComponent } from '../../categories-list/categories-list.component';
+// 3d party module
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   imports: [
@@ -26,6 +28,8 @@ import { CategoriesListComponent } from '../../categories-list/categories-list.c
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
+  // 3d party module
+    NgxSpinnerModule
   ],
   declarations: [
     HomeComponent,

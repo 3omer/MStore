@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'app/common/product';
 import { ProductsService } from 'app/services/products.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'products-list',
@@ -12,7 +13,7 @@ export class ProductsListComponent implements OnInit {
   products: Product[]
   categories: string[]
   selectedCategory: string
-  constructor(private productsService: ProductsService) { }
+  constructor(private productsService: ProductsService, private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
      this.productsService.getProducts().subscribe(products => this.products=products)
@@ -29,7 +30,11 @@ export class ProductsListComponent implements OnInit {
     }
     else {
       this.selectedCategory = category
-      this.productsService.getProducts(category).subscribe(filteredProducts => this.products = filteredProducts)
+      this.spinner.show()
+      this.productsService.getProducts(category).subscribe(filteredProducts => {
+        this.products = filteredProducts
+        this.spinner.hide()
+      })
     }
   }
 }
