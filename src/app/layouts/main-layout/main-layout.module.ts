@@ -15,6 +15,7 @@ import { ProductComponent } from 'app/product/product.component';
 import { CategoriesListComponent } from '../../categories-list/categories-list.component';
 // 3d party module
 import { NgxSpinnerModule } from "ngx-spinner";
+import { ProductDetailsComponent } from 'app/product-details/product-details.component';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     HomeComponent,
     ProductsListComponent,
     ProductComponent,
-    CategoriesListComponent
+    CategoriesListComponent,
+    ProductDetailsComponent
   ]
 })
 
