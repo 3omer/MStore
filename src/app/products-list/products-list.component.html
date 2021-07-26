@@ -1,1 +1,15 @@
-<product *ngFor="let product of products" [product]="product" class="col-md-4"></product>
+<div>
+    <!-- TODO: refactor to a filter-component that emits events on every new set of filter options -->
+    <div class="categories">
+        <span>Browse By category:</span>
+        <ul class="nav nav-pills nav-justified">
+            <li (click)="onCategorySelected(category)" class="nav-item bg-light m-1 p-1" *ngFor="let category of categories">
+              <a class="nav-link" href="#">{{category}}</a>
+            </li>
+          </ul>
+    </div>
+
+    <div class="row">
+        <product *ngFor="let product of products" [product]="product" class="col-md-4"></product>
+    </div>
+</div>

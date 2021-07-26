@@ -12,6 +12,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import { ProductsListComponent } from 'app/products-list/products-list.component';
 import { ProductComponent } from 'app/product/product.component';
+import { CategoriesListComponent } from '../../categories-list/categories-list.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { ProductComponent } from 'app/product/product.component';
   declarations: [
     HomeComponent,
     ProductsListComponent,
-    ProductComponent
+    ProductComponent,
+    CategoriesListComponent
   ]
 })
 

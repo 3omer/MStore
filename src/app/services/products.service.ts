@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from 'app/common/product';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { NotifyService } from './notify.service';
 
@@ -15,8 +15,8 @@ export class ProductsService {
 
    }
 
-   getProducts(limit: number=10): Observable<Product[]> {
-     const url = `${this.URL}?limit=${limit}`
+   getProducts(category='', limit: number=10): Observable<Product[]> {
+     const url = category.length ? `${this.URL}/category/${category}?limit=${limit}` : `${this.URL}?limit=${limit}` 
      return this.http.get<Product[]>(url)
      .pipe(
        catchError((err) => {
@@ -27,5 +27,15 @@ export class ProductsService {
        })
      )
 
+   }
+
+   getCategories(): Observable<string[]> {
+    //  TODO: fetch from https://fakestoreapi.com/products/categories
+     return of([
+      "electronics",
+      "jewelery",
+      "men clothing",
+      "women clothing"
+      ])
    }
 }
