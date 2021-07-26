@@ -8,7 +8,7 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 const routes: Routes =[
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'products',
     pathMatch: 'full',
   }, {
     path: '',

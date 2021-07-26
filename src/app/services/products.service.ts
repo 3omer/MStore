@@ -29,15 +29,16 @@ export class ProductsService {
 
    }
 
-   getProduct(id:number | string){
+   getProduct(id:number | string) : Observable<Product>{
     // fetch a sngile a product
     // https://fakestoreapi.com/products/1
     const url = `${this.URL}/${id}`
-    return this.http.get<Product>(url).pipe(
+    return this.http.get<Product>(url)
+    .pipe(
       catchError(err => {
         console.log('getProduct:failed - error: ', err);
         this.notify.showNetworkFailerAlert()
-        return null
+        return []
       })
     )
    }
