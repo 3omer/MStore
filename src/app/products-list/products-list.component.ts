@@ -18,7 +18,7 @@ export class ProductsListComponent implements OnInit {
   constructor(private productsService: ProductsService, private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
-     this.productsService.getProducts().subscribe(products => this.products=products)
+     this.productsService.getAll().subscribe(products => this.products=products)
      this.productsService.getCategories().subscribe(catgs => this.categories=catgs)
   }
 
@@ -33,7 +33,7 @@ export class ProductsListComponent implements OnInit {
     else {
       this.selectedCategory = category
       this.spinner.show()
-      this.productsService.getProducts(category).subscribe(filteredProducts => {
+      this.productsService.getAll(category).subscribe(filteredProducts => {
         this.products = filteredProducts
         this.spinner.hide()
       }, err => {

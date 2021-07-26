@@ -14,8 +14,8 @@ export class ProductsService {
   constructor(private http: HttpClient, private notify: NotifyService) {
 
    }
-
-   getProducts(category='', limit: number=10): Observable<Product[]> {
+   
+   getAll(category='', limit: number=10): Observable<Product[]> {
      const url = category.length ? `${this.URL}/category/${category}?limit=${limit}` : `${this.URL}?limit=${limit}` 
      return this.http.get<Product[]>(url)
      .pipe(
@@ -27,6 +27,19 @@ export class ProductsService {
        })
      )
 
+   }
+
+   getProduct(id:number | string){
+    // fetch a sngile a product
+    // https://fakestoreapi.com/products/1
+    const url = `${this.URL}/${id}`
+    return this.http.get<Product>(url).pipe(
+      catchError(err => {
+        console.log('getProduct:failed - error: ', err);
+        this.notify.showNetworkFailerAlert()
+        return null
+      })
+    )
    }
 
    getCategories(): Observable<string[]> {
