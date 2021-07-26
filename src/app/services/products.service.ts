@@ -16,7 +16,11 @@ export class ProductsService {
    }
    
    getAll(category='', limit: number=10): Observable<Product[]> {
-     const url = category.length ? `${this.URL}/category/${category}?limit=${limit}` : `${this.URL}?limit=${limit}` 
+      // dont use category param if not passed or equal 'all'
+    const url = !category.length || category === 'all' ? 
+              `${this.URL}?limit=${limit}` : 
+              `${this.URL}/category/${category}?limit=${limit}`
+
      return this.http.get<Product[]>(url)
      .pipe(
        catchError((err) => {
@@ -46,6 +50,7 @@ export class ProductsService {
    getCategories(): Observable<string[]> {
     //  TODO: fetch from https://fakestoreapi.com/products/categories
      return of([
+       "all",
       "electronics",
       "jewelery",
       "men's clothing",

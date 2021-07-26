@@ -1,5 +1,9 @@
 <div class="main-content">
     <div class="container-fluid">
+          <!-- spinner -->
+          <ngx-spinner [fullScreen]="false" type="ball-clip-rotate-multiple" size="medium">
+              <p class="loading">Loading Product...</p>
+          </ngx-spinner>
         <div class="card m-auto">
             <div class="text-center float-right">
                 <img [src]="product.image" class="img-fluid" width="300" alt="product image">

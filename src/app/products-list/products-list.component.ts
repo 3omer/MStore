@@ -14,13 +14,15 @@ export class ProductsListComponent implements OnInit {
 
   products: Product[]
   categories: string[]
-  selectedCategory: string
+  selectedCategory: string = 'all'
   constructor(private productsService: ProductsService, private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
-     this.productsService.getAll().subscribe(products => this.products=products)
-     this.productsService.getCategories().subscribe(catgs => this.categories=catgs)
-  }
+    // fetch categories
+    this.productsService.getCategories().subscribe(catgs => this.categories=catgs)
+    // load default category 'all'
+    this.onCategorySelected('all')
+    }
 
   onCategorySelected(category: string) {
     // load products of specific category
