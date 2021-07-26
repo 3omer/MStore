@@ -3,6 +3,8 @@ import { Product } from 'app/common/product';
 import { ProductsService } from 'app/services/products.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
+//TODO: move spinner calls to products-service 
+
 @Component({
   selector: 'products-list',
   templateUrl: './products-list.component.html',
@@ -33,6 +35,8 @@ export class ProductsListComponent implements OnInit {
       this.spinner.show()
       this.productsService.getProducts(category).subscribe(filteredProducts => {
         this.products = filteredProducts
+        this.spinner.hide()
+      }, err => {
         this.spinner.hide()
       })
     }

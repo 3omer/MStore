@@ -3,8 +3,8 @@
     <div class="categories">
         <span class="">Browse By category:</span>
         <ul class="nav nav-pills nav-justified">
-            <li (click)="onCategorySelected(category)" *ngFor="let category of categories" class="nav-item bg-light m-1 p-1">
-              <a class="nav-link" [class.active]="selectedCategory === category" href="#">{{category}}</a>
+            <li (click)="onCategorySelected(category)" *ngFor="let category of categories" class="nav-item m-1 p-1">
+              <a class="btn nav-link" [class.active]="selectedCategory === category" href="#">{{category}}</a>
             </li>
           </ul>
     </div>
