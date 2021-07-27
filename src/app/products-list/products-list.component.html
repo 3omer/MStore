@@ -2,9 +2,9 @@
     <!-- TODO: refactor to a filter-component that emits events on every new set of filter options -->
     <div class="categories">
         <span class="">Browse By category:</span>
-        <ul class="nav nav-pills nav-justified">
+        <ul class="nav nav-pills nav-fill">
             <li (click)="onCategorySelected(category)" *ngFor="let category of categories" class="nav-item m-1 p-1">
-              <a class="btn nav-link" [class.active]="selectedCategory === category" href="#">{{category}}</a>
+              <a class="btn nav-link" [class.active]="selectedCategory === category">{{category}}</a>
             </li>
           </ul>
     </div>
