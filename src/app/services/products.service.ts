@@ -5,9 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { NotifyService } from './notify.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ProductsService {
   
   private URL = "https://fakestoreapi.com/products"

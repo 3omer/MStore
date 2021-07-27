@@ -14,6 +14,7 @@ import { ProductComponent } from 'app/product/product.component';
 import { CategoriesListComponent } from '../../categories-list/categories-list.component';
 import { ProductDetailsComponent } from 'app/product-details/product-details.component';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { ProductsService } from 'app/services/products.service';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     ProductComponent,
     CategoriesListComponent,
     ProductDetailsComponent
-  ]
+  ],
+  providers: [ProductsService]
 })
 
 export class MainLayoutModule {}
