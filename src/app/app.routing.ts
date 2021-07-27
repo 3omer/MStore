@@ -3,7 +3,7 @@ import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
-import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { ProductsComponent } from './products/products.component';
 
 const routes: Routes =[
   {
@@ -12,10 +12,10 @@ const routes: Routes =[
     pathMatch: 'full',
   }, {
     path: '',
-    component: MainLayoutComponent,
+    component: ProductsComponent,
     children: [{
       path: '',
-      loadChildren: () => import('./layouts/main-layout/main-layout.module').then(m => m.MainLayoutModule)
+      loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
     }]
   }
 ];
