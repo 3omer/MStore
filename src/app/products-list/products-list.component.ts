@@ -33,7 +33,7 @@ export class ProductsListComponent implements OnInit {
 
   btnAdd() {
     console.log('items btn add');
-    this.dialog.open(ProductFormDialogComponent, { width: '500px' })
+    this.dialog.open(ProductFormDialogComponent, { width: '600px' })
     .afterClosed()
     .subscribe(()=> {
       this.loadProducts()
@@ -42,7 +42,7 @@ export class ProductsListComponent implements OnInit {
   
   btnEdit(id) {
     console.log('item edit btn ', id);
-    this.dialog.open(ProductFormDialogComponent, { width: '500px', data: this.products.find((product) => product.id === id) })
+    this.dialog.open(ProductFormDialogComponent, { width: '600px', data: this.products.find((product) => product.id === id) })
     .afterClosed()
     .subscribe(()=> {
       this.loadProducts()
