@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Add new category</h2>
+<mat-dialog-content class="mat-typography">
+  <div>
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="standard">
+          <mat-label>Name</mat-label>
+          <input matInput type="text" name="name" formControlName="name" placeholder="Give category a name (title)">
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+          <mat-label>Description</mat-label>
+          <textarea matInput name="description" formControlName="description" placeholder="Descripe this category"></textarea>
+      </mat-form-field>
+    </form>
+  </div>
+  <div>
+    {{feedbackMessage}}
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="categoryForm.invalid">Save</button>
+  <button mat-stroked-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

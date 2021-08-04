@@ -1,0 +1,27 @@
+<div class="card">
+<div class="card-body">
+    <h4>Previous invoices</h4>
+    <div class="table-responsive table-full-width table-hover">
+        <table class="table">
+            <thead class="text-danger">
+                <th>ID</th>
+                <th>Costumer</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Net</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let entry of invoices" class="invoice-row" (click)="showDetails(entry)">
+                    <td>
+                        {{entry.id}}
+                    </td>
+                    <td class="customer">{{entry.customerName}}</td>
+                    <td class="category">{{entry.categoryId}}</td>
+                    <td class="Date">{{entry.invoiceDate}}</td>
+                    <td class="cost">{{entry.netAmount | currency}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div> 
+</div>
+</div>

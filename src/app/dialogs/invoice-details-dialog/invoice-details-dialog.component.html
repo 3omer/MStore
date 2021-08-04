@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Invoice details</h2>
+<mat-dialog-content class="mat-typography">
+  <div>
+    <ul class="list-group">
+        <li class="list-group-item">id: {{dialogData.id}}</li>
+        <li class="list-group-item">Customer: {{dialogData.customerName}}</li>
+        <li class="list-group-item">Category: {{dialogData.categoryId}} - {{dialogData.category.name}}</li>
+        <li class="list-group-item">Date: {{dialogData.invoiceDate}}</li>
+        <li class="list-group-item">Net amount {{dialogData.netAmount | currency}}</li>
+        <li class="list-group-item">Notes: {{dialogData.notes}}</li>
+      </ul>    
+        <h4>Items:</h4>
+        <ul class="list-group">
+        <li class="list-group-item" *ngFor="let item of dialogData.invoiceDetails"> item:{{item.product.name}} - price: {{ item.price }} - quantity:{{item.qty}}</li>
+        </ul>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-flat-button mat-dialog-close color="warn">OK</button>
+  <a  routerLink="/invoices/{{dialogData.id}}" mat-flat-button mat-dialog-close color="warn">Edit</a>
+</mat-dialog-actions>

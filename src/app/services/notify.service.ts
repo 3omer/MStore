@@ -20,7 +20,16 @@ export class NotifyService {
       });
   }
   
-showNotification(from, align){
- 
+operationPassed(message: string){
+  $.notify({
+    message: message ? message : "Operation completed successfully"
+    },{
+    type: 'success',
+    timer: 4000,
+    placement: {
+    from: 'top',
+    align: 'right'
+    }
+    });
   }
 }

@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Add new category</h2>
+<mat-dialog-content class="mat-typography">
+  <div>
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="standard">
+          <mat-label>Name</mat-label>
+          <input matInput type="text"  formControlName="name" placeholder="product name (title)">
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>Select category</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>Price</mat-label>
+        <input matInput type="number" name="price" formControlName="price" placeholder="product price">
+    </mat-form-field>
+      <mat-form-field appearance="standard">
+          <mat-label>Description</mat-label>
+          <textarea matInput name="description" formControlName="description" placeholder="Descripe this category"></textarea>
+      </mat-form-field>
+    </form>
+  </div>
+  <div>
+    {{feedbackMessage}}
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="productForm.invalid">Submit</button>
+  <button mat-stroked-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>
