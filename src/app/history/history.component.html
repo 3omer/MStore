@@ -17,7 +17,7 @@
                     </td>
                     <td class="customer">{{entry.customerName}}</td>
                     <td class="category">{{entry.category.name}}</td>
-                    <td class="Date">{{entry.invoiceDate}}</td>
+                    <td class="Date">{{entry.invoiceDate | date : "shortDate" }}</td>
                     <td class="cost">{{entry.netAmount | currency}}</td>
                 </tr>
             </tbody>
