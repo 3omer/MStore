@@ -9,6 +9,7 @@ import { Product } from 'app/common/product';
 import { CategoryService } from 'app/services/category.service';
 import { InvoiceService } from 'app/services/invoice.service';
 import { ProductService } from 'app/services/product.service';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -45,7 +46,8 @@ export class InvoicesComponent implements OnInit {
     private location: Location,
     private categoryService: CategoryService,
     private productService: ProductService,
-    private invoiceService: InvoiceService
+    private invoiceService: InvoiceService,
+    private toasr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -161,11 +163,12 @@ export class InvoicesComponent implements OnInit {
     this.isSaving = false
     if(res.id)  { 
       console.log("created invoice: ", res);
+      this.toasr.success("New invoice has been created")
       this.invoiceItems = []
       this.resetNewItemForm ()
       if(this.invoiceId) this.location.back()
     }
-    else console.log("operation failed");
+    else this.toasr.error("Something went wrong");
   })
   
   }
