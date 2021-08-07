@@ -5,6 +5,7 @@ import { Category } from 'app/common/category';
 import { Product } from 'app/common/product';
 import { CategoryService } from 'app/services/category.service';
 import { ProductService } from 'app/services/product.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'product-form-dialog',
@@ -34,6 +35,7 @@ export class ProductFormDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public dialogData: Product,
     private categoryService: CategoryService,
     private productService: ProductService,
+    private toastr: ToastrService,
     public dialogRef: MatDialogRef<ProductFormDialogComponent>
       ) {
     this.editingMode = this.dialogData?.id ? true : false
@@ -58,9 +60,13 @@ export class ProductFormDialogComponent implements OnInit {
       .subscribe(res => {
         if (res) {
           this.feedbackMessage = "Product updated"
+          this.toastr.success("Category updated successfully")
           this.dialogRef.close()
         }
-        else this.feedbackMessage = "Something went wrong"
+        else {
+          this.feedbackMessage = "Something went wrong"
+          this.toastr.error("Something went wrong")
+        }
       })
     }
     else {
@@ -69,10 +75,14 @@ export class ProductFormDialogComponent implements OnInit {
       .subscribe(newProduct => {
         if (newProduct) {
           this.feedbackMessage = "Product added successfully"
+          this.toastr.success("Category added successfully")
           this.dialogRef.close()
           
         }
-        else this.feedbackMessage = "Something went wrong"
+        else {
+          this.feedbackMessage = "Something went wrong"
+          this.toastr.error("Something went wrong")
+        }
       })
     }
   }
