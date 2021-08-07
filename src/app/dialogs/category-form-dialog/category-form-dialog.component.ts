@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Category } from 'app/common/category';
 import { CategoryService } from 'app/services/category.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'category-form-dialog',
@@ -28,6 +29,7 @@ export class CategoryFormDialog implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: Category,
     private categoryService: CategoryService,
+    private toastr: ToastrService,
     public dialogRef: MatDialogRef<CategoryFormDialog>
     ) {
     // if user passed data open form for editing
@@ -49,10 +51,14 @@ export class CategoryFormDialog implements OnInit {
       this.categoryService.update(this.dialogData.id, modCategory)
       .subscribe(res => {
         if (res) { 
-          this.feedbackMessage = "Category updated" 
+          this.feedbackMessage = "Category updated"
+          this.toastr.success("Category updated") 
           this.dialogRef.close()
         }
-        else this.feedbackMessage = "Something went wrong"
+        else {
+          this.feedbackMessage = "Something went wrong"
+          this.toastr.error("Something went wrong")
+        }
       })
     }
     else {
@@ -61,9 +67,13 @@ export class CategoryFormDialog implements OnInit {
       .subscribe(newCategory => {
         if (newCategory) {
           this.feedbackMessage = "Category added successfully"
+          this.toastr.success("Category added successfully")
           this.dialogRef.close()
         }
-        else this.feedbackMessage = "Something went wrong"
+        else {
+          this.feedbackMessage = "Something went wrong"
+          this.toastr.error("Something went wrong")
+        }
       })
     }
   }

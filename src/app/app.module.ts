@@ -27,7 +27,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { HistoryComponent } from './history/history.component';
 import { InvoiceDetailsDialogComponent } from './dialogs/invoice-details-dialog/invoice-details-dialog.component';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -49,7 +49,8 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     MatDividerModule,
     MatNativeDateModule,
     MatDatepickerModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ToastrModule.forRoot()
   ],
   declarations: [
     AppComponent,
