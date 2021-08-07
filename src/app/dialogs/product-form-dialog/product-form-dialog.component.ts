@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Category } from 'app/common/category';
 import { Product } from 'app/common/product';
 import { CategoryService } from 'app/services/category.service';
@@ -33,7 +33,8 @@ export class ProductFormDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: Product,
     private categoryService: CategoryService,
-    private productService: ProductService
+    private productService: ProductService,
+    public dialogRef: MatDialogRef<ProductFormDialogComponent>
       ) {
     this.editingMode = this.dialogData?.id ? true : false
    }
@@ -55,7 +56,10 @@ export class ProductFormDialogComponent implements OnInit {
       modProduct.id = this.dialogData.id
       this.productService.update(this.dialogData.id, modProduct)
       .subscribe(res => {
-        if (res) this.feedbackMessage = "Product updated"
+        if (res) {
+          this.feedbackMessage = "Product updated"
+          this.dialogRef.close()
+        }
         else this.feedbackMessage = "Something went wrong"
       })
     }
@@ -63,7 +67,11 @@ export class ProductFormDialogComponent implements OnInit {
       console.log('createing ...');
       this.productService.create(this.productForm.value as Product)
       .subscribe(newProduct => {
-        if (newProduct) this.feedbackMessage = "Product added successfully"
+        if (newProduct) {
+          this.feedbackMessage = "Product added successfully"
+          this.dialogRef.close()
+          
+        }
         else this.feedbackMessage = "Something went wrong"
       })
     }
