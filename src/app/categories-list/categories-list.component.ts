@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Category } from 'app/common/category';
 import { CategoryFormDialog } from 'app/dialogs/category-form-dialog/category-form-dialog.component';
 import { CategoryService } from 'app/services/category.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'categories-list',
@@ -14,7 +15,8 @@ export class CategoriesListComponent implements OnInit {
   categories: Category[]
   constructor(
     public dialog: MatDialog,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private toastr: ToastrService
     ) { }
 
   ngOnInit(): void {
@@ -57,10 +59,12 @@ export class CategoriesListComponent implements OnInit {
     console.log('categories delete btn ', id);
     this.categoryService.delete(id).subscribe(flag => {
       if(flag) { 
-        console.log("operation passed");
+        this.toastr.success("Category has been deleted")
         this.categories = this.categories.filter(cat => cat.id != id)
       }
-      else console.log("operation failed");
+      else {
+        this.toastr.error("Something went wrong")
+      }
     })
     
   }

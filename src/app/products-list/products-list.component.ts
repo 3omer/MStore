@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Product } from 'app/common/product';
 import { ProductFormDialogComponent } from 'app/dialogs/product-form-dialog/product-form-dialog.component';
 import { ProductService } from 'app/services/product.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'products-list',
@@ -15,7 +16,8 @@ export class ProductsListComponent implements OnInit {
 
   constructor( 
     public dialog: MatDialog,
-    private productService: ProductService
+    private productService: ProductService,
+    private toastr: ToastrService
     ) { }
   ngOnInit(): void {
     this.productService.getAll()
@@ -54,10 +56,12 @@ export class ProductsListComponent implements OnInit {
     console.log('item delete btn ', id);
     this.productService.delete(id).subscribe(flag => {
       if(flag) { 
-        console.log("operation passed");
+        this.toastr.success("Product has been deleted")
         this.products = this.products.filter(cat => cat.id != id)
       }
-      else console.log("operation failed");
+      else {
+        this.toastr.error("Something went wrong")        
+      }
     })
     
   }
