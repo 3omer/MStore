@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Category } from 'app/common/category';
 import { CategoryService } from 'app/services/category.service';
 
@@ -27,7 +27,8 @@ export class CategoryFormDialog implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: Category,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    public dialogRef: MatDialogRef<CategoryFormDialog>
     ) {
     // if user passed data open form for editing
       this.editingMode = this.dialogData?.id ? true: false
@@ -47,7 +48,10 @@ export class CategoryFormDialog implements OnInit {
       modCategory.id = this.dialogData.id
       this.categoryService.update(this.dialogData.id, modCategory)
       .subscribe(res => {
-        if (res) this.feedbackMessage = "Category updated"
+        if (res) { 
+          this.feedbackMessage = "Category updated" 
+          this.dialogRef.close()
+        }
         else this.feedbackMessage = "Something went wrong"
       })
     }
@@ -55,7 +59,10 @@ export class CategoryFormDialog implements OnInit {
       console.log('createing ...');
       this.categoryService.create(this.categoryForm.value as Category)
       .subscribe(newCategory => {
-        if (newCategory) this.feedbackMessage = "Category added successfully"
+        if (newCategory) {
+          this.feedbackMessage = "Category added successfully"
+          this.dialogRef.close()
+        }
         else this.feedbackMessage = "Something went wrong"
       })
     }
