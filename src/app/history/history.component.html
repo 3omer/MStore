@@ -1,27 +1,44 @@
 <div class="card">
 <div class="card-body">
     <h4>Previous invoices</h4>
+    <mat-form-field appearance="standard">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+      </mat-form-field>
     <div class="table-responsive table-full-width table-hover">
-        <table class="table">
-            <thead class="text-danger">
-                <th>ID</th>
-                <th>Costumer</th>
-                <th>Category</th>
-                <th>Date</th>
-                <th>Net</th>
-            </thead>
-            <tbody>
-                <tr *ngFor="let entry of invoices" class="invoice-row" (click)="showDetails(entry)">
-                    <td>
-                        {{entry.id}}
-                    </td>
-                    <td class="customer">{{entry.customerName}}</td>
-                    <td class="category">{{entry.category.name}}</td>
-                    <td class="Date">{{entry.invoiceDate | date:"shortDate" }}</td>
-                    <td class="cost">{{entry.netAmount | currency}}</td>
-                </tr>
-            </tbody>
+        <table mat-table [dataSource]="invoicesTableSource" matSort class="table">
+                <!-- Id Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>ID</th>
+                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                </ng-container>
+                <!-- CustomerName Column -->
+                <ng-container matColumnDef="customerName" >
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Customer </th>
+                    <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
+                </ng-container>
+                <!-- Category  -->
+                <ng-container matColumnDef="category">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Category </th>
+                    <td mat-cell *matCellDef="let element"> {{element.category.name}} </td>
+                </ng-container>
+                 <!-- Date  -->
+                 <ng-container matColumnDef="invoiceDate">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.invoiceDate | date:"shortDate"}} </td>
+                </ng-container>
+
+                <!-- Category  -->
+                <ng-container matColumnDef="netAmount">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Net </th>
+                    <td mat-cell *matCellDef="let element"> {{element.netAmount | currency}} </td>
+                </ng-container>
+                    <!-- row definition -->
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
         </table>
+        <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+
     </div> 
 </div>
 </div>

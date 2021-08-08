@@ -28,7 +28,9 @@ import { HistoryComponent } from './history/history.component';
 import { InvoiceDetailsDialogComponent } from './dialogs/invoice-details-dialog/invoice-details-dialog.component';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { ToastrModule } from 'ngx-toastr';
-
+import { MatTableModule } from "@angular/material/table";
+import { MatSortModule } from "@angular/material/sort";
+import { MatPaginatorModule } from "@angular/material/paginator";
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -50,7 +52,10 @@ import { ToastrModule } from 'ngx-toastr';
     MatNativeDateModule,
     MatDatepickerModule,
     MatProgressSpinnerModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
   declarations: [
     AppComponent,
