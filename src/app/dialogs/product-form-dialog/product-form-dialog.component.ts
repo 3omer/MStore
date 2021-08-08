@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Category } from 'app/common/category';
 import { Product } from 'app/common/product';
@@ -23,10 +23,10 @@ export class ProductFormDialogComponent implements OnInit {
     description: ''
   }
   productForm = new FormGroup({
-    name: new FormControl(''),
-    price: new FormControl(),
-    categoryId: new FormControl(),
-    description: new FormControl('')
+    name: new FormControl('', [Validators.required]),
+    price: new FormControl('', [Validators.required, Validators.min(0)]),
+    categoryId: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required])
   })
 
   categories: Category[]
