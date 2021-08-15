@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 import { Category } from 'app/common/category';
 import { CategoryFormDialog } from 'app/dialogs/category-form-dialog/category-form-dialog.component';
 import { CategoryService } from 'app/services/category.service';
+import { Load } from 'app/state/category.actions';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -16,13 +18,16 @@ export class CategoriesListComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private categoryService: CategoryService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private store: Store
     ) { }
 
   ngOnInit(): void {
-    this.categoryService.getAll().subscribe(cats => {
-      this.categories = cats
-    })
+    // this.categoryService.getAll().subscribe(cats => {
+    //   this.categories = cats
+    // })
+    this.store.dispatch(Load())
+
   }
   
   loadCategories(): void {

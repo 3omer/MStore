@@ -31,6 +31,13 @@ import { ToastrModule } from 'ngx-toastr';
 import { MatTableModule } from "@angular/material/table";
 import { MatSortModule } from "@angular/material/sort";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'environments/environment';
+import { categoryReducer } from './state/category.reducer';
+import { CategoryEffects } from './state/category.effects';
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -55,7 +62,13 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     ToastrModule.forRoot(),
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    // store
+    StoreModule.forRoot([]),
+    StoreModule.forFeature("categories", categoryReducer),
+    // effects
+    EffectsModule.forRoot([CategoryEffects]),
+    StoreDevtoolsModule.instrument( { name: 'MStore App DevTools', maxAge: 25, logOnly: environment.production})
   ],
   declarations: [
     AppComponent,
