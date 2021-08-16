@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Category } from 'app/common/category';
 import { CategoryFormDialog } from 'app/dialogs/category-form-dialog/category-form-dialog.component';
 import { CategoryService } from 'app/services/category.service';
+import { AppState } from 'app/state/app.state';
 import { Load } from 'app/state/category.actions';
+import { CategoryState } from 'app/state/category.reducer';
+import { selectCategories } from 'app/state/category.selectors';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'categories-list',
@@ -15,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 export class CategoriesListComponent implements OnInit {
 
   categories: Category[]
+
   constructor(
     public dialog: MatDialog,
     private categoryService: CategoryService,
@@ -23,10 +29,11 @@ export class CategoriesListComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    // this.categoryService.getAll().subscribe(cats => {
-    //   this.categories = cats
-    // })
+   
+    this.store.select(selectCategories).subscribe(cats => this.categories = cats)
+    
     this.store.dispatch(Load())
+    // this.categories$ = this.store.select(selectCategories)
 
   }
   

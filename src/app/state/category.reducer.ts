@@ -17,7 +17,7 @@ export const categoryReducer = createReducer(
     on(LoadSuccess, (state, { categories }) => {
         return {
             ...state,
-            ...categories,
+            categories: categories,
             error: ''
         }
     }),
