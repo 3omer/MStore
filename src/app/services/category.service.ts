@@ -24,26 +24,12 @@ export class CategoryService {
   // post new category - returns new created category object OR null in case of failure
   create(category: Category): Observable<Category> {
     return this.http.post<Category>(this.BASE_URL, category)
-    .pipe(
-      catchError(error => {
-        console.log("createCategory failed: ", error)
-        return of(null as Category)
-      })
-    )
   }
 
   // if successed returns the modified category
   update(targetId: number, modCategory: Category): Observable<Category> {
     const url = `${this.BASE_URL}/${targetId}`
-
     return this.http.put<Category>(url, modCategory)
-    .pipe(
-      map(res => modCategory),
-      catchError(error => {
-        console.log('updat category faied: ', error);
-        return of(null as Category)
-      })
-    )
   }
 
 

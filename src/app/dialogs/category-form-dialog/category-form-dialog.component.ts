@@ -1,19 +1,24 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Category } from 'app/common/category';
+import { RequestStatus } from 'app/common/requestStatus';
 import { CategoryService } from 'app/services/category.service';
-import { CreateCategory } from 'app/state/category.actions';
+import { CreateCategory, UpdateCategory } from 'app/state/category.actions';
+import { selectCategoryRequestStatus } from 'app/state/category.selectors';
 import { ToastrService } from 'ngx-toastr';
+import { skip, takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'category-form-dialog',
   templateUrl: './category-form-dialog.component.html',
   styleUrls: ['./category-form-dialog.component.css']
 })
-export class CategoryFormDialog implements OnInit {
-  
+export class CategoryFormDialog implements OnInit, OnDestroy {
+  // use to unsupscribe
+  private componentActive = false
+
   // feedback
   feedbackMessage = ""
   // is the form dialog opened for editing or for creating new category
@@ -34,53 +39,59 @@ export class CategoryFormDialog implements OnInit {
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<CategoryFormDialog>,
     private store: Store
-    ) {
+  ) {
+    this.componentActive = true
     // if user passed data open form for editing
-      this.editingMode = this.dialogData?.id ? true: false
+    this.editingMode = this.dialogData?.id ? true : false
 
-   }
+  }
 
   ngOnInit(): void {
-      const { id, ...formInputs } = this.dialogData
-      this.categoryForm.setValue(Object.assign(this.initialInputs, formInputs))
+    const { id, ...formInputs } = this.dialogData
+    this.categoryForm.setValue(Object.assign(this.initialInputs, formInputs))
+
+    this.store.select(selectCategoryRequestStatus)
+    .pipe(skip(1), takeWhile(() => this.componentActive))
+    .subscribe(status => {
+      switch (status) {
+        case RequestStatus.succeeded:
+          console.log(`${ this.editingMode ? "update" : "create" } passed`);
+          this.toastr.success(`Category ${ this.editingMode ? "updated" : "created" } successfully`)
+          this.dialogRef.close()
+          break;
+
+        case RequestStatus.failed:
+          console.log(`${ this.editingMode ? "update" : "create" } failed`);
+          this.toastr.error("Something went wrong")
+          break;
+
+        default:
+          console.log(`unknown request status while handling ${ this.editingMode ? 'update' : 'create'} operation. respoonse status is ${status}`);
+          break;
+      }
+    }
+    )
+
   }
 
   onSubmit() {
-    console.log("NewCat onSubmit(): ",  this.categoryForm.value);
-    if(this.editingMode) {
+    console.log("NewCat onSubmit(): ", this.categoryForm.value);
+    if (this.editingMode) {
       console.log('updating ...');
       const modCategory: Category = this.categoryForm.value
       modCategory.id = this.dialogData.id
-      this.categoryService.update(this.dialogData.id, modCategory)
-      .subscribe(res => {
-        if (res) { 
-          this.feedbackMessage = "Category updated"
-          this.toastr.success("Category updated") 
-          this.dialogRef.close()
-        }
-        else {
-          this.feedbackMessage = "Something went wrong"
-          this.toastr.error("Something went wrong")
-        }
-      })
+      this.store.dispatch(UpdateCategory({ category: modCategory }))
     }
     else {
       console.log('createing ...');
       const newCategory = this.categoryForm.value as Category
-      // this.categoryService.create(this.categoryForm.value as Category)
-      // .subscribe(newCategory => {
-      //   if (newCategory) {
-      //     this.feedbackMessage = "Category added successfully"
-      //     this.toastr.success("Category added successfully")
-      //     this.dialogRef.close()
-      //   }
-      //   else {
-      //     this.feedbackMessage = "Something went wrong"
-      //     this.toastr.error("Something went wrong")
-      //   }
-      // })
       this.store.dispatch(CreateCategory({ category: newCategory }))
+
     }
   }
 
+
+  ngOnDestroy() {
+    this.componentActive = false
+  }
 }

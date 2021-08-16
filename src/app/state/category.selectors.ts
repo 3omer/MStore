@@ -6,3 +6,5 @@ import { CategoryState } from "./category.reducer";
 export const selectCategoriesFeature = createFeatureSelector<AppState, CategoryState>("categories")
 
 export const selectCategories = createSelector(selectCategoriesFeature, ((state: CategoryState ) => state.categories))
+
+export const selectCategoryRequestStatus = createSelector(selectCategoriesFeature, ((state: CategoryState) => state.requestStatus))
