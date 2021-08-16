@@ -24,7 +24,6 @@ export class CategoryEffects {
     )
   )
 
-
   deleteCategory$ = createEffect(() => {
     return this.actions$.pipe(
         ofType(DeleteCategory),
