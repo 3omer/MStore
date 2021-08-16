@@ -57,7 +57,7 @@ export class CategoryEffects {
         );
   });
 
-  createUpdate$ = createEffect(() => {
+  updateCategory$ = createEffect(() => {
     return this.actions$.pipe(
         ofType(UpdateCategory),
         map((action) => action.category),
