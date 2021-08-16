@@ -50,7 +50,7 @@ export class CategoryEffects {
           
           return this.categoriesService.create(category)
             .pipe(
-              map(() => (CreateCategorySuccess({category}))),
+              map((addedCategory) => (CreateCategorySuccess({category: addedCategory}))),
               catchError(err => of(CreateCategoryFail(err)))
             );
         })        

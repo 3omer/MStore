@@ -8,3 +8,5 @@ export const selectCategoriesFeature = createFeatureSelector<AppState, CategoryS
 export const selectCategories = createSelector(selectCategoriesFeature, ((state: CategoryState ) => state.categories))
 
 export const selectCategoryRequestStatus = createSelector(selectCategoriesFeature, ((state: CategoryState) => state.requestStatus))
+
+export const selectDeleteCategoryRequestStatus = createSelector(selectCategoriesFeature, ((state: CategoryState) => state.deleteRequestStatus))

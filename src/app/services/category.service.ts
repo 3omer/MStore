@@ -12,13 +12,13 @@ export class CategoryService {
   private BASE_URL = "https://localhost:44381/api/categories"
 
   constructor(private http: HttpClient) { }
-  
+
   getAll(): Observable<Category[]> {
     return this.http.get<Category[]>(this.BASE_URL)
-    .pipe(catchError((error) => {
-      console.log('getAllCategories failed: ', error)
-      return of([] as Category[])
-    }))
+      .pipe(catchError((error) => {
+        console.log('getAllCategories failed: ', error)
+        return of([] as Category[])
+      }))
   }
 
   // post new category - returns new created category object OR null in case of failure
@@ -36,12 +36,5 @@ export class CategoryService {
   delete(targetId: number): Observable<Boolean> {
     const url = `${this.BASE_URL}/${targetId}`
     return this.http.delete<Boolean>(url)
-    .pipe(
-      map(res => true),
-      catchError(error => {
-        console.log("delete failed: ", error);
-        return of(false)
-      })
-    )
   }
 }

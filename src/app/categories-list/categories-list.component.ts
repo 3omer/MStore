@@ -1,37 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { Category } from 'app/common/category';
+import { RequestStatus } from 'app/common/requestStatus';
 import { CategoryFormDialog } from 'app/dialogs/category-form-dialog/category-form-dialog.component';
 import { CategoryService } from 'app/services/category.service';
 import { AppState } from 'app/state/app.state';
 import { DeleteCategory, Load } from 'app/state/category.actions';
 import { CategoryState } from 'app/state/category.reducer';
-import { selectCategories } from 'app/state/category.selectors';
+import { selectCategories, selectCategoryRequestStatus, selectDeleteCategoryRequestStatus } from 'app/state/category.selectors';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'categories-list',
   templateUrl: './categories-list.component.html',
   styleUrls: ['./categories-list.component.css']
 })
-export class CategoriesListComponent implements OnInit {
+export class CategoriesListComponent implements OnInit, OnDestroy {
 
   categories: Category[]
+  private componentActive: boolean = false;
 
   constructor(
     public dialog: MatDialog,
     private toastr: ToastrService,
     private store: Store
-    ) { }
-
-  ngOnInit(): void {   
-    this.store.dispatch(Load())
-    this.store.select(selectCategories).subscribe(cats => this.categories = cats)
+  ) {
+    this.componentActive = true
   }
-  
+
+  ngOnInit(): void {
+    this.store.dispatch(Load())
+    // TODO: unsub
+    this.store.select(selectCategories).subscribe(cats => this.categories = cats)
+    
+    this.store.select(selectDeleteCategoryRequestStatus)
+      .pipe(takeWhile(() => this.componentActive))
+      .subscribe(status => {
+        switch (status) {
+          case RequestStatus.succeeded:
+            this.toastr.success(`category deleted successfully`)
+            break;
+
+          case RequestStatus.failed:
+            this.toastr.error("Something went wrong")
+            break;
+
+          default:
+            console.log(`unknown request status while handling delete operation. respoonse status is ${status}`);
+            break;
+        }
+      }
+      )
+  }
+
   loadCategories(): void {
     this.store.dispatch(Load())
   }
@@ -40,29 +64,23 @@ export class CategoriesListComponent implements OnInit {
     console.log('categories btn add');
     // TODO: dialog should return the created category to push it in the list
     this.dialog.open(CategoryFormDialog, { width: '500px' })
-    .afterClosed()
-    .subscribe(()=> {
-      this.loadCategories()
-    })
-    
   }
-  
+
   btnEdit(id) {
     console.log('categories edit btn ', id);
-    this.dialog.open(CategoryFormDialog, { 
-      width: '500px', 
+    this.dialog.open(CategoryFormDialog, {
+      width: '500px',
       data: this.categories.find((cat) => cat.id === id)
-    })
-    .afterClosed()
-    .subscribe(()=> {
-      this.loadCategories()
     })
   }
 
   btnDelete(id) {
     // TODO: use a confirm dialog
     console.log('categories delete btn ', id);
-    this.store.dispatch(DeleteCategory({id}))
-    
+    this.store.dispatch(DeleteCategory({ id }))
+  }
+
+  ngOnDestroy() {
+    this.componentActive = false
   }
 }
