@@ -35,7 +35,6 @@ export class CategoryFormDialog implements OnInit, OnDestroy {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: Category,
-    private categoryService: CategoryService,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<CategoryFormDialog>,
     private store: Store
