@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { CategoryService } from 'app/services/category.service';
 import { EMPTY, of } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
-import { Load, LoadFail, LoadSuccess } from './category.actions';
+import { DeleteCategory, DeleteCategoryFail, DeleteCategorySuccess, Load, LoadFail, LoadSuccess } from './category.actions';
 
 @Injectable()
 export class CategoryEffects {
@@ -23,4 +23,22 @@ export class CategoryEffects {
       ))
     )
   )
+
+
+  deleteCategory$ = createEffect(() => {
+    return this.actions$.pipe(
+        ofType(DeleteCategory),
+        map((action) => action.id),
+        mergeMap(id => {
+          console.log(id);
+          
+          return this.categoriesService.delete(id)
+            .pipe(
+              map(() => (DeleteCategorySuccess({id}))),
+              catchError(err => of(DeleteCategoryFail(err)))
+            );
+        })        
+        );
+  });
+
 }

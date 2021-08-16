@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { Category } from "../common/category";
-import { Load, LoadFail, LoadSuccess } from "./category.actions";
+import { DeleteCategoryFail, DeleteCategorySuccess, Load, LoadFail, LoadSuccess } from "./category.actions";
 
 export interface CategoryState {
     categories: Category[],
@@ -26,5 +26,19 @@ export const categoryReducer = createReducer(
             ...state,
             error: error
         }
+    }),
+    on(DeleteCategorySuccess, (state, { id }) => {
+        return {
+            ...state,
+            categories: state.categories.filter(cat => cat.id !== id),
+            error: ''
+        }
+    }),
+    on(DeleteCategoryFail, (state, { error }) => {
+        return {
+            ...state,
+            error: error
+        }
     })
+
 )
