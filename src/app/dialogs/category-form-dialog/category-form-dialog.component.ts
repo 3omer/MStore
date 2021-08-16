@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 import { Category } from 'app/common/category';
 import { CategoryService } from 'app/services/category.service';
+import { CreateCategory } from 'app/state/category.actions';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -30,7 +32,8 @@ export class CategoryFormDialog implements OnInit {
     @Inject(MAT_DIALOG_DATA) public dialogData: Category,
     private categoryService: CategoryService,
     private toastr: ToastrService,
-    public dialogRef: MatDialogRef<CategoryFormDialog>
+    public dialogRef: MatDialogRef<CategoryFormDialog>,
+    private store: Store
     ) {
     // if user passed data open form for editing
       this.editingMode = this.dialogData?.id ? true: false
@@ -63,18 +66,20 @@ export class CategoryFormDialog implements OnInit {
     }
     else {
       console.log('createing ...');
-      this.categoryService.create(this.categoryForm.value as Category)
-      .subscribe(newCategory => {
-        if (newCategory) {
-          this.feedbackMessage = "Category added successfully"
-          this.toastr.success("Category added successfully")
-          this.dialogRef.close()
-        }
-        else {
-          this.feedbackMessage = "Something went wrong"
-          this.toastr.error("Something went wrong")
-        }
-      })
+      const newCategory = this.categoryForm.value as Category
+      // this.categoryService.create(this.categoryForm.value as Category)
+      // .subscribe(newCategory => {
+      //   if (newCategory) {
+      //     this.feedbackMessage = "Category added successfully"
+      //     this.toastr.success("Category added successfully")
+      //     this.dialogRef.close()
+      //   }
+      //   else {
+      //     this.feedbackMessage = "Something went wrong"
+      //     this.toastr.error("Something went wrong")
+      //   }
+      // })
+      this.store.dispatch(CreateCategory({ category: newCategory }))
     }
   }
 
