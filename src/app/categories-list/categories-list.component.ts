@@ -62,15 +62,6 @@ export class CategoriesListComponent implements OnInit {
   btnDelete(id) {
     // TODO: use a confirm dialog
     console.log('categories delete btn ', id);
-    // this.categoryService.delete(id).subscribe(flag => {
-    //   if(flag) { 
-    //     this.toastr.success("Category has been deleted")
-    //     this.categories = this.categories.filter(cat => cat.id != id)
-    //   }
-    //   else {
-    //     this.toastr.error("Something went wrong")
-    //   }
-    // })
     this.store.dispatch(DeleteCategory({id}))
     
   }
