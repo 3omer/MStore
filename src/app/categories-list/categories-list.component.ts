@@ -1,17 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Category } from 'app/common/category';
 import { RequestStatus } from 'app/common/requestStatus';
 import { CategoryFormDialog } from 'app/dialogs/category-form-dialog/category-form-dialog.component';
-import { CategoryService } from 'app/services/category.service';
-import { AppState } from 'app/state/app.state';
 import { DeleteCategory, Load } from 'app/state/category.actions';
-import { CategoryState } from 'app/state/category.reducer';
-import { selectCategories, selectCategoryRequestStatus, selectDeleteCategoryRequestStatus } from 'app/state/category.selectors';
+import { selectCategories, selectDeleteCategoryRequestStatus } from 'app/state/category.selectors';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
-import { map, takeWhile } from 'rxjs/operators';
+import { skip, takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'categories-list',
@@ -37,7 +33,7 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
     this.store.select(selectCategories).subscribe(cats => this.categories = cats)
     
     this.store.select(selectDeleteCategoryRequestStatus)
-      .pipe(takeWhile(() => this.componentActive))
+      .pipe(takeWhile(() => this.componentActive), skip(1))
       .subscribe(status => {
         switch (status) {
           case RequestStatus.succeeded:

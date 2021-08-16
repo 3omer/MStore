@@ -1,10 +1,9 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Category } from 'app/common/category';
 import { RequestStatus } from 'app/common/requestStatus';
-import { CategoryService } from 'app/services/category.service';
 import { CreateCategory, UpdateCategory } from 'app/state/category.actions';
 import { selectCategoryRequestStatus } from 'app/state/category.selectors';
 import { ToastrService } from 'ngx-toastr';

@@ -96,7 +96,7 @@ export const categoryReducer = createReducer(
     on(UpdateCategorySuccess, (state, { category }) => {
         return {
             ...state,
-            categories: state.categories.concat(category),
+            categories: state.categories.map(c => c.id === category.id ? category : c),
             requestStatus: RequestStatus.succeeded,
             error: ""
         }

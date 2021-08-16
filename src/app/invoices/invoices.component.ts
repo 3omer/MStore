@@ -2,13 +2,14 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Category } from 'app/common/category';
 import { Invoice } from 'app/common/Inovice';
 import { InvoiceEntry } from 'app/common/InvoiceEntry';
 import { Product } from 'app/common/product';
-import { CategoryService } from 'app/services/category.service';
 import { InvoiceService } from 'app/services/invoice.service';
 import { ProductService } from 'app/services/product.service';
+import { selectCategories } from 'app/state/category.selectors';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 
@@ -23,7 +24,7 @@ export class InvoicesComponent implements OnInit {
   isSaving = false
 
   // check is opened for editing 
-  invoiceId : number 
+  invoiceId: number
 
   inputCategoryId = new FormControl('')
   inputNotes = new FormControl('')
@@ -31,7 +32,7 @@ export class InvoicesComponent implements OnInit {
   inputDate = new FormControl('')
 
   categories: Category[]
-  
+
   _products: Product[] = []
   filteredProducts: Product[]
 
@@ -44,36 +45,35 @@ export class InvoicesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private categoryService: CategoryService,
     private productService: ProductService,
     private invoiceService: InvoiceService,
-    private toasr: ToastrService
-  ) {}
+    private toasr: ToastrService,
+    private store: Store
+  ) { }
 
   ngOnInit(): void {
     const idStr = this.route.snapshot.paramMap.get('id')
     this.invoiceId = Number.parseInt(idStr)
 
-    this.categoryService.getAll().subscribe(cats => {
-      this.categories = cats
-    })
+    // TODO: unsub
+    this.store.select(selectCategories).subscribe(cats => this.categories = cats)
 
     this.productService.getAll().subscribe(prods => {
       this._products = prods
-      if(this.invoiceId) {
+      if (this.invoiceId) {
         // get invoice object
         this.invoiceService.get(this.invoiceId)
-        .subscribe(res => {
-          if (res) { 
-            this.parseInvoiceDetails(res) 
-            // triger on category selected to filter products
-            this.onCategorySelected(res.categoryId)
-          }
-          else console.log('something went wrong');
-        })
+          .subscribe(res => {
+            if (res) {
+              this.parseInvoiceDetails(res)
+              // triger on category selected to filter products
+              this.onCategorySelected(res.categoryId)
+            }
+            else console.log('something went wrong');
+          })
       }
     })
-  
+
   }
 
   btnAdd() {
@@ -87,7 +87,7 @@ export class InvoicesComponent implements OnInit {
 
     const cost = product.price * quantity
     const net = cost - ((discountPercentage / 100) * cost)
-    
+
     const entry: InvoiceEntry = {
       productId: product.id,
       productName: product.name,
@@ -119,26 +119,26 @@ export class InvoicesComponent implements OnInit {
     this.inputNotes.reset()
     this.inputDate.reset()
   }
-  
+
   // TODO: to much logic - could be contained in a class
-  getItemPrice(itemId:number){
-    if(!itemId) return 0
+  getItemPrice(itemId: number) {
+    if (!itemId) return 0
     return this.filteredProducts.find(item => item.id == itemId)?.price ?? 0;
   }
 
-  getTotalCost() {    
+  getTotalCost() {
     return this.invoiceItems.reduce((sum, item) => sum + (item.price * item.qty), 0)
   }
 
   getTotalDiscount() {
-    return this.invoiceItems.reduce((sum, item) => sum + ((item.price * item.qty) * (item.discount/100)), 0)
+    return this.invoiceItems.reduce((sum, item) => sum + ((item.price * item.qty) * (item.discount / 100)), 0)
   }
-  
+
   getTotalNet() {
     return this.getTotalCost() - this.getTotalDiscount()
   }
 
-  btnClearAll(){
+  btnClearAll() {
     this.invoiceItems = []
   }
 
@@ -149,38 +149,38 @@ export class InvoicesComponent implements OnInit {
       notes: this.inputNotes.value,
       customerName: this.inputCustomerName.value,
       categoryId: this.inputCategoryId.value,
-      invoiceDate:  this.inputDate.value,
-      invoiceDetails: this.invoiceItems    
-  }
-  console.log("final invoice form ", invoiceForm);
-    let res$: Observable<Invoice>
-  
-    //if editing mode / call update 
-  if(this.invoiceId) res$ = this.invoiceService.update(this.invoiceId, invoiceForm)
-  else res$ = this.invoiceService.create(invoiceForm)
-
-  res$.subscribe(res => {
-    this.isSaving = false
-    if(res.id)  { 
-      console.log("created invoice: ", res);
-      this.toasr.success("New invoice has been created")
-      this.invoiceItems = []
-      this.resetNewItemForm ()
-      if(this.invoiceId) this.location.back()
+      invoiceDate: this.inputDate.value,
+      invoiceDetails: this.invoiceItems
     }
-    else this.toasr.error("Something went wrong");
-  })
-  
+    console.log("final invoice form ", invoiceForm);
+    let res$: Observable<Invoice>
+
+    //if editing mode / call update 
+    if (this.invoiceId) res$ = this.invoiceService.update(this.invoiceId, invoiceForm)
+    else res$ = this.invoiceService.create(invoiceForm)
+
+    res$.subscribe(res => {
+      this.isSaving = false
+      if (res.id) {
+        console.log("created invoice: ", res);
+        this.toasr.success("New invoice has been created")
+        this.invoiceItems = []
+        this.resetNewItemForm()
+        if (this.invoiceId) this.location.back()
+      }
+      else this.toasr.error("Something went wrong");
+    })
+
   }
 
   // populate invoice table and form from existin invoice object
-  parseInvoiceDetails(invoice: Invoice){
+  parseInvoiceDetails(invoice: Invoice) {
     this.inputCustomerName.setValue(invoice.customerName)
     this.inputCategoryId.setValue(invoice.categoryId)
     this.inputDate.setValue(invoice.invoiceDate)
     this.inputNotes.setValue((invoice.notes))
     this.invoiceItems = invoice.invoiceDetails.map(item => {
-      return { ...item, productName: item.product.name  }
+      return { ...item, productName: item.product.name }
     })
 
   }
