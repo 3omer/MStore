@@ -15,10 +15,6 @@ export class CategoryService {
 
   getAll(): Observable<Category[]> {
     return this.http.get<Category[]>(this.BASE_URL)
-      .pipe(catchError((error) => {
-        console.log('getAllCategories failed: ', error)
-        return of([] as Category[])
-      }))
   }
 
   // post new category - returns new created category object OR null in case of failure

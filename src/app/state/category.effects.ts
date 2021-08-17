@@ -19,7 +19,7 @@ export class CategoryEffects {
     mergeMap(() => this.categoriesService.getAll()
       .pipe(
         map(categories => (LoadSuccess({ categories }))),
-        catchError((error) => of(LoadFail(error)))
+        catchError((error) => of(LoadFail({error:error})))
       ))
     )
   )
