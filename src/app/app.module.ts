@@ -38,6 +38,7 @@ import { environment } from 'environments/environment';
 import { categoryReducer } from './state/category.reducer';
 import { CategoryEffects } from './state/category.effects';
 import { productReducer } from './state/product.reducer';
+import { ProductEffects } from './state/product.effects';
 
 @NgModule({
   imports: [
@@ -69,7 +70,7 @@ import { productReducer } from './state/product.reducer';
     StoreModule.forFeature("categories", categoryReducer),
     StoreModule.forFeature("products", productReducer),
     // effects
-    EffectsModule.forRoot([CategoryEffects]),
+    EffectsModule.forRoot([CategoryEffects, ProductEffects]),
     StoreDevtoolsModule.instrument( { name: 'MStore App DevTools', maxAge: 25, logOnly: environment.production})
   ],
   declarations: [
