@@ -29,8 +29,9 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(Load())
-    // TODO: unsub
-    this.store.select(selectCategories).subscribe(cats => this.categories = cats)
+    this.store.select(selectCategories)
+    .pipe(takeWhile(() => this.componentActive))
+    .subscribe(cats => this.categories = cats)
     
     this.store.select(selectDeleteCategoryRequestStatus)
       .pipe(takeWhile(() => this.componentActive), skip(1))
@@ -52,13 +53,8 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
       )
   }
 
-  loadCategories(): void {
-    this.store.dispatch(Load())
-  }
-
   btnAdd() {
     console.log('categories btn add');
-    // TODO: dialog should return the created category to push it in the list
     this.dialog.open(CategoryFormDialog, { width: '500px' })
   }
 
